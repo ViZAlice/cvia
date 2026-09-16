@@ -30,7 +30,7 @@ curl /cmd → Rust 控制服务 → Tauri 事件 → 页面控制桥(src/control
 |---|---|---|
 | `page` | `{wait?}` | 取页面快照（等价 GET /page） |
 | `click` | `{selector, confirm?=true}` | 点击元素；confirm 弹窗自动代答（`confirm:false` 等同用户点取消） |
-| `fill` | `{selector, value}` | 填充 input/textarea/select（React 兼容） |
+| `fill` | `{selector, value}` | 填充 input/textarea/select（React 兼容）；**select 支持按可见文本/值/模糊匹配**，快照的 elements 里 select 带 `options` 选项列表 |
 | `batch` | `{steps:[{type,payload,wait?}], snapshots?="last"\|"all", wait?}` | 按顺序执行多步；任一步失败立即停止并返回失败现场 |
 | `fake` | `{on: true\|false}` | **假下载开关**：离线注入/移除合成任务（带占位封面、进度自动走到 97%），调下载态视觉不碰网络 |
 | `ping` | — | 连通性测试 |

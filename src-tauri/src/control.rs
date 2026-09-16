@@ -242,7 +242,7 @@ fn help_json() -> serde_json::Value {
             "ping": "连通测试",
             "page": "取快照（等价 GET /page）",
             "click": "payload {selector, confirm?=true}；点击元素，confirm 弹窗自动代答，confirm:false 等同用户取消",
-            "fill": "payload {selector, value}；填充 input/textarea/select（React 受控兼容）",
+            "fill": "payload {selector, value}；填充 input/textarea/select（React 兼容）；select 按可见文本/值/模糊匹配，快照 elements 中 select 带 options 列表",
             "batch": "payload {steps:[{type,payload,wait?}], snapshots?=\"all\"|\"last\", wait?}；顺序执行多步，任一步失败立即停止并返回失败现场快照",
             "fake": "payload {on: true|false}；假下载开关：离线注入/移除合成任务（带占位封面，进度自动走到 97%），调下载态视觉不碰网络"
         },

@@ -72,7 +72,21 @@ function setValue(el: Element, value: string) {
     const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
     setter?.call(el, value);
   } else if (el instanceof HTMLSelectElement) {
-    el.value = value;
+    // 下拉框支持按「可见文本」或「值」选择：文本精确匹配 → 值匹配 → 文本包含
+    const want = String(value);
+    const opts = [...el.options];
+    const found =
+      opts.find((o) => o.text.trim() === want) ??
+      opts.find((o) => o.value === want) ??
+      opts.find((o) => o.text.toLowerCase().includes(want.toLowerCase()));
+    if (!found) {
+      const names = opts
+        .slice(0, 10)
+        .map((o) => o.text.trim())
+        .join(" / ");
+      throw new Error(`下拉框没有该选项：${want}（可用：${names}${opts.length > 10 ?" …" : ""}）`);
+    }
+    el.value = found.value;
   } else if (el instanceof HTMLInputElement) {
     throw new Error("checkbox/radio 请用 click 指令切换");
   } else {
@@ -149,6 +163,11 @@ function buildPage() {
             ? `<masked:${input.value.length}>`
             : input.value.slice(0, 120)
           : undefined,
+        // 下拉框附上选项列表（值 + 可见文本），Agent 才能看懂有什么可选
+        options:
+          el instanceof HTMLSelectElement
+            ? [...el.options].slice(0, 30).map((o) => ({ value: o.value, text: o.text.trim() }))
+            : undefined,
         checked:
           el instanceof HTMLInputElement && (el.type === "checkbox" || el.type === "radio")
             ? el.checked

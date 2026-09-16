@@ -39,7 +39,7 @@ curl -s -X POST http://127.0.0.1:33211/cmd -H "Content-Type: application/json" -
 |---|---|---|
 | `page` | `{wait?}` | 取页面快照（等价 GET /page） |
 | `click` | `{selector, confirm?=true}` | 点击；confirm 弹窗自动代答（false=视为取消） |
-| `fill` | `{selector, value}` | 填充 input/textarea/select（React 兼容） |
+| `fill` | `{selector, value}` | 填充 input/textarea/select（React 兼容）；select 按可见文本/值/模糊匹配，快照里 select 带 options |
 | `batch` | `{steps:[{type,payload,wait?}], snapshots?, wait?}` | 顺序执行，**任一步失败立即停**并返回失败现场 |
 | `fake` | `{on: true\|false}` | 假下载开关：离线注入合成任务（带占位封面、进度走到 97%），调下载态视觉不碰网络 |
 
@@ -66,8 +66,9 @@ curl -s -X POST http://127.0.0.1:33211/cmd -H "Content-Type: application/json" -
 
 **添加直链下载**：btn-add → fill input-uris（可填 input-dir）→ btn-submit-add。
 
-**Civitai 模型页下载**：fill input-uris 填 `civitai.com/models/...` 网页链接，
-等 ~4s 面板出现（`civitai-panel`），从 snapshot 里挑 `civitai-dl-<fileId>` 点击即下。
+**Civitai 模型页下载**：btn-civitai（或 btn-add）→ fill input-uris 填 `civitai.com/models/...` 网页链接，
+等 ~4s 面板出现（`civitai-panel`）。多版本时快照里 `civitai-version-select` 带 options 列表，
+fill 按版本文本切换（如 "v23"）；然后点 `civitai-dl-<fileId>` 即下（面板激活时底部无第二下载按钮）。
 预览图走 APP 本地 `/img` 代理（与下载同一条代理通道）。
 
 **删除任务**：取 gid → 点 `[data-gid=...] [data-testid=btn-delete]`（confirm 自动代答，

@@ -116,9 +116,22 @@ export default function AddTask({ onClose, onDone, onError, preset }: Props) {
   /**
    * 提交下载。override 用于 Civitai 面板直接指定链接（绕过输入框），
    * 此时 noExtras=true：自定义文件名/校验和等附加项属于输入框链接的上下文，不套用。
+   * 面板已解析且输入框是模型页链接时，「开始下载」= 下载当前选中版本的主文件
+   * （直接把网页链接交给 aria2 只会去下 HTML 页面，是错误路径）。
    */
   const submit = async (override?: string[], noExtras = false) => {
-    const src = override ?? lines;
+    let src = override ?? lines;
+    if (!override && civModel && src.length === 1 && parseCivitaiPageUrl(src[0])) {
+      const ver = civModel.versions.find((v) => v.id === civVersionId) ?? civModel.versions[0];
+      const primary = ver?.files.find((f) => f.primary) ?? ver?.files[0];
+      if (!primary) {
+        onError(new Error("当前版本没有可下载的文件"));
+        return;
+      }
+      rememberTaskImage(primary.downloadUrl, ver?.images[0]?.url);
+      src = [primary.downloadUrl];
+      noExtras = true;
+    }
     if (src.length === 0) return;
     const single = !noExtras && src.length === 1 && /^https?:\/\//i.test(src[0]);
     const finalUris = src.map((s) => applySiteAuth(preprocessUri(s).uri).uri);
@@ -355,14 +368,17 @@ export default function AddTask({ onClose, onDone, onError, preset }: Props) {
           <button className="btn" data-testid="btn-cancel-add" onClick={onClose}>
             取消
           </button>
-          <button
-            className="btn primary"
-            data-testid="btn-submit-add"
-            disabled={submitting || uris.trim() === ""}
-            onClick={() => submit()}
-          >
-            {submitting ? "添加中…" : "开始下载"}
-          </button>
+          {/* Civitai 模型页输入：下载只走面板里每个文件的按钮，不出现第二个下载入口 */}
+          {!(civModel || civLoading || civError) && (
+            <button
+              className="btn primary"
+              data-testid="btn-submit-add"
+              disabled={submitting || uris.trim() === ""}
+              onClick={() => submit()}
+            >
+              {submitting ? "添加中…" : "开始下载"}
+            </button>
+          )}
         </div>
       </div>
     </div>
