@@ -1,4 +1,4 @@
-# AGENTS.md — cvia（Aria2 下载器）项目全景
+# AGENTS.md — cvia 项目全景
 
 > 给 AI Agent / 新协作者的快速上手文档。读这一篇 ≈ 读完整个仓库。
 > 控制通道的完整操作手册在 [CONTROL.md](CONTROL.md)。
@@ -46,7 +46,7 @@ Windows 桌面下载器：**Tauri 2（Rust）+ React 18 + TypeScript + Vite** �
 主窗口（frameless 无系统标题栏，decorations:false；顶栏=拖拽区，双击最大化）
 │
 ├─ 顶栏 topbar
-│  ├─ 品牌区：lime 色块 logo ⇣ +「Aria2 下载器」
+│  ├─ 品牌区：lime 色块 logo ⇣ +「cvia」
 │  ├─ btn-theme  ☀/☾ 主题切换（跟随系统初始，手动后 localStorage 记住）
 │  ├─ btn-settings ⚙  → 打开设置弹窗
 │  └─ 窗口控制：win-min ─ / win-max ▢ / win-close ✕（关闭=隐藏到托盘继续下载）

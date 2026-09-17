@@ -381,7 +381,7 @@ fn main() {
             let menu = Menu::with_items(app, &[&show, &pause, &resume, &quit])?;
             TrayIconBuilder::with_id("main")
                 .icon(app.default_window_icon().expect("app icon").clone())
-                .tooltip("Aria2 下载器（关闭窗口后仍继续下载）")
+                .tooltip("cvia（关闭窗口后仍继续下载）")
                 .menu(&menu)
                 .show_menu_on_left_click(true)
                 .on_menu_event(|app, event| match event.id.as_ref() {

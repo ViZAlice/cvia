@@ -1,4 +1,4 @@
-# cvia · Aria2 下载器
+# cvia
 
 基于 [Tauri 2](https://tauri.app) + [aria2](https://aria2.github.io) 的 Windows 桌面下载器。
 粘贴链接即下，支持 Civitai 模型页一键解析，深浅双主题。

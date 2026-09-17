@@ -265,7 +265,7 @@ export default function App() {
   // 窗口标题实时反映下载速度，最小化/切走时也能一眼看到状态
   useEffect(() => {
     const dl = Number(stat?.downloadSpeed ?? 0);
-    const title = dl > 0 ? `↓ ${fmtSpeed(dl)} · Aria2 下载器` : "Aria2 下载器";
+    const title = dl > 0 ? `↓ ${fmtSpeed(dl)} · cvia` : "cvia";
     document.title = title;
     // 原生窗口标题（标题栏/任务栏显示的）需要单独设置
     getCurrentWindow().setTitle(title).catch(() => {});
@@ -332,7 +332,7 @@ export default function App() {
           <span className="logo" aria-hidden>
             ⇣
           </span>
-          <span className="title">Aria2 下载器</span>
+          <span className="title">cvia</span>
         </div>
         <div className="header-actions">
           <button

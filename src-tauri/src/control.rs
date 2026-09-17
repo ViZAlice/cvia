@@ -40,7 +40,7 @@ impl Inner {
     fn health(&self) -> serde_json::Value {
         serde_json::json!({
             "status": "ok",
-            "app": "Aria2 下载器",
+            "app": "cvia",
             "version": env!("CARGO_PKG_VERSION"),
             "frontendReady": self.frontend_ready.load(Ordering::Relaxed),
             "port": *self.port.lock().unwrap(),
@@ -229,7 +229,7 @@ fn err_json(msg: &str) -> serde_json::Value {
 /// 控制通道自描述（GET /help）
 fn help_json() -> serde_json::Value {
     serde_json::json!({
-        "app": "Aria2 下载器",
+        "app": "cvia",
         "purpose": "与 GUI 用户同一条通道操控 APP：指令在页面里以真实 UI 事件执行，aria2 调用始终由 APP 前端发出；请勿绕过 APP 直接调用 aria2 RPC",
         "endpoints": {
             "GET /health": "存活/就绪检查（frontendReady 为 true 才能发指令）",
